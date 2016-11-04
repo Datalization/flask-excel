@@ -1,32 +1,35 @@
 from flask import Flask,render_template
+from settings import setting
+from view import auth
+
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-  return render_template('login.html')
+  return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
-  pass
+  return auth.login()
 
 @app.route('/logout')
 def logout():
-  pass
+  return auth.logout()
 
 @app.route('/<userid>')
-def getUserAll():
+def getUserAll(userid):
   pass
 
 @app.route('/<objectid>')
-def object():
+def object(objectid):
   pass
 
 @app.route('/filter')
 def filter():
   pass
 
+
 if __name__ == "__main__":
-  # app = create_app(config="config.yaml")
-  # app.run(use_debugger=use_debugger, debug=app.debug,use_reloader=use_debugger, host='0.0.0.0')
-  app.run()
+  app.secret_key = setting['secret_key']
+  app.run(debug=setting['debug'])
