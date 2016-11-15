@@ -1,5 +1,6 @@
 from hashlib import md5
 from flask import render_template,request,redirect,url_for,flash,session
+from functools import wraps
 
 def auth(username,password):
   if username == "123":
@@ -21,9 +22,17 @@ def login():
   else:
     return render_template('login.html')
 
+
+def is_login(func):
+  @wraps(func)
+  def wrapper(*args,**kw):
+    if "username" in session:
+      return func(*args,**kw)
+    else:
+      return redirect(url_for('login'))
+  return wrapper
+
+
 def logout():
   session.pop('username',None)
   return redirect(url_for('login'))
-
-def is_login():
-  return True

@@ -6,6 +6,7 @@ from view import auth
 app = Flask(__name__)
 
 @app.route('/')
+@auth.is_login
 def index():
   return render_template('index.html')
 
